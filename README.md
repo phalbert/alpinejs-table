@@ -1,0 +1,1 @@
+# Alpine.js Paginated Table
