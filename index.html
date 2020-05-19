@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <title>Alpine.js Table</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@2.x.x/dist/alpine.min.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>Alpine Paginated Table</h1>
+    </div>
+    <br />
+    <div x-data="getData()" data-reflect-root="">
+        <form class="form-fields">
+            <div class="field search">
+                <label class="label">Search</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Event" x-model="searchValue">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Threshold</label>
+                <div class="control">
+                    <div class="select">
+                        <select x-model="selectedOption">
+                            <option>Default</option>
+                            <template x-for="option in options" :key="option.value">
+                                <option :key="option.value" :value="option.value" x-text="option.text"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <Search class="button is-link" @click="fetchData()"
+                    :class="[ isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700' ]" :disabled="isLoading"
+                    disabled="disabled">
+                    Search
+                    </button>
+            </div>
+        </form>
+        <template x-if="events">
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Attendes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="event in events" :key="event.id">
+                        <tr>
+                            <th x-text="event.id"></th>
+                            <th x-text="event.title"></th>
+                            <th x-text="event.description">Holanda</th>
+                            <th x-text="event.location">Neto</th>
+                            <th x-text="event.attendes">1</th>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <br />
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" x-model="previousPage" @click="fetchData(previousPage)">Previous</a>
+                <a class="pagination-next" x-model="nextPage" @click="fetchData(nextPage)">Next page</a>
+                <ul class="pagination-list">
+                    <li><a class="pagination-link" x-model="1" x-text="1" @click="fetchData(1)"></a></li>
+                    <li><span class="pagination-ellipsis">&hellip;</span></li>
+                    <li><a class="pagination-link is-current" x-text="page">46</a></li>
+                    <li><span class="pagination-ellipsis">&hellip;</span></li>
+                    <li><a class="pagination-link" x-model="lastPage" x-text="lastPage"
+                            @click="fetchData(lastPage)"></a></li>
+                </ul>
+            </nav>
+        </template>
+    </div>
+    <script type="text/javascript">
+
+        function getData() {
+            return {
+                selectedOption: "",
+                options: [
+                    { value: "0.95", text: "0.95" },
+                    { value: "0.9", text: "0.9" },
+                    { value: "0.8", text: "0.8" },
+                    { value: "0.7", text: "0.7" },
+                ],
+                searchValue: '',
+                page: 1,
+                limit: 10,
+                total: 50,
+                events: null,
+                isLoading: false,
+                previousPage: 1,
+                nextPage: null,
+                lastPage: 0,
+                fetchData(page = this.page) {
+                    this.page = page
+                    this.isLoading = true;
+                    fetch(`https://5d6516c05b26ae001489eb85.mockapi.io/api/v1/events?search=${this.searchValue}&page=${this.page}&limit=${this.limit}`)
+                        .then((res) => res.json())
+                        .then((data) => {
+                            this.isLoading = false;
+                            this.events = data;
+
+                            this.previousPage = this.page == 1 ? this.previousPage : this.page - 1
+                            this.nextPage = this.page + 1
+
+                            this.lastPage = Math.floor(this.total / this.limit)
+                        });
+                },
+            };
+        }
+
+    </script>
+</body>
+
+</html>

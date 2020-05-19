@@ -1,0 +1,40 @@
+
+html {
+    overflow-y: hidden;
+}
+
+body {
+    background-color: #e5e5e5;
+}
+
+.header {
+    background-color: #2b2b2b;
+    color: white;
+    padding: 1em;
+}
+
+.form-fields {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: #2b2b2b 1px solid;
+}
+
+.search {
+    min-width: 500px;
+}
+
+.result-table {
+    min-width: 100%;
+}
+
+.result-table th {
+    padding: 10px;
+    /* border: white 1px solid; */
+}
+
+.result-table tr {
+    border-bottom: white 0.5px solid;
+}
