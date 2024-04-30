@@ -44,4 +44,4 @@ The JavaScript code (within the `<script>` tag) defines an Alpine.js component u
 ## Notes
 
 - The API call simulates fetching data from a real backend. In a production app you'd replace this with your actual data source.
-- This example keeps the styling minimal (via Bulma) to focus on the Alpine.js functionality.
+- This example keeps the styling minimal (via [Bulma](https://bulma.io/)) to focus on the Alpine.js functionality.
